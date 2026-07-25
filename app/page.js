@@ -80,23 +80,24 @@ const load = useCallback(async () => {
 
                          const { data: ratingRows } = await supabase
     .from("ratings")
-    .select("appetizer_id, rating");
+    .select("appetizer_id, rating, profile_id");
 
                          const byId = new Map((profileRows || []).map((p) => [p.id, p.username]));
     const ratingsByApp = new Map();
     for (const r of ratingRows || []) {
         if (!ratingsByApp.has(r.appetizer_id)) ratingsByApp.set(r.appetizer_id, []);
-        ratingsByApp.get(r.appetizer_id).push(r.rating);
+        ratingsByApp.get(r.appetizer_id).push(r);
     }
 
                          const enriched = (appRows || []).map((a) => {
                              const ratings = ratingsByApp.get(a.id) || [];
-                             const avg = ratings.length ? ratings.reduce((s, r) => s + r, 0) / ratings.length : null;
+                             const avg = ratings.length ? ratings.reduce((s, r) => s + r.rating, 0) / ratings.length : null;
                              return {
                                  ...a,
                                  made_by_name: byId.get(a.made_by),
                                  co_maker_name: a.co_maker_id ? byId.get(a.co_maker_id) : null,
                                  avg,
+                                 ratings,
                                  count: ratings.length,
                              };
                          });
@@ -269,6 +270,9 @@ onClick={() => setMadeWith("with")}
 {a.avg ? `${RATING_LABELS[Math.round(a.avg)]} \u00b7 ${a.avg.toFixed(1)} avg` : "No ratings yet"}
 {a.count > 0 && ` \u00b7 ${a.count} rating${a.count === 1 ? "" : "s"}`}
 </div>
+{a.ratings && a.ratings.filter((r) => r.profile_id === user.id).map((r) => (
+    <div className="my-rating-badge" key="mine-rating">✅ You rated: {RATING_LABELS[r.rating]}</div>
+    ))}
                                     </div>
 {a.made_by === user.id && (
     <button
