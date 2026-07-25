@@ -489,3 +489,89 @@ button {
 .delete-btn:active {
     transform: scale(0.92);
 }
+
+
+.app-info .title-row .title,
+.detail-info h2 {
+      overflow-wrap: break-word;
+      word-break: break-word;
+}
+
+.rank-badge {
+      min-width: 34px;
+}
+
+@media (max-width: 480px) {
+      .page {
+              padding: 16px 12px 72px;
+      }
+
+  .topbar h1 {
+          font-size: 19px;
+  }
+
+  .auth-card {
+          margin: 40px auto;
+          padding: 20px;
+  }
+
+  .submit-card {
+          padding: 14px;
+  }
+
+  .app-card {
+          padding: 12px;
+          gap: 10px;
+  }
+
+  .app-card img,
+      .app-card .photo-fallback {
+              width: 52px;
+              height: 52px;
+              font-size: 18px;
+              border-radius: 10px;
+      }
+
+  .detail-hero img,
+      .detail-hero .photo-fallback {
+              width: 96px;
+              height: 96px;
+      }
+
+  .app-info .title-row .title {
+          font-size: 15px;
+  }
+
+  .rate-buttons {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+  }
+
+  .rate-buttons button {
+          white-space: normal;
+          text-align: center;
+  }
+
+  .nav-links a {
+          padding: 6px 11px;
+          font-size: 12px;
+  }
+
+  .delete-btn {
+          width: 32px;
+          height: 32px;
+  }
+}
+
+@media (max-width: 360px) {
+      .rate-buttons {
+              grid-template-columns: 1fr;
+      }
+
+  .app-card img,
+      .app-card .photo-fallback {
+              width: 46px;
+              height: 46px;
+      }
+}
