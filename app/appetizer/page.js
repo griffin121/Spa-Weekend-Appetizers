@@ -14,6 +14,8 @@ const RATING_LABELS = {
     5: "🔥 Good Ass Appetizer",
 };
 
+const REACTION_EMOJIS = ["👍", "❤️", "😂", "😮", "😢", "😡"];
+
 function makerLabel(app, myId) {
     const madeByYou = app.made_by === myId;
     const withYou = app.co_maker_id === myId;
@@ -33,6 +35,10 @@ const [user, setUser] = useState(null);
 
 const [appetizer, setAppetizer] = useState(null);
     const [ratings, setRatings] = useState([]);
+    const [comments, setComments] = useState([]);
+    const [reactions, setReactions] = useState([]);
+    const [commentText, setCommentText] = useState("");
+    const [postingComment, setPostingComment] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [justRated, setJustRated] = useState(false);
@@ -92,6 +98,24 @@ const load = useCallback(async () => {
         .select("rating, profile_id, updated_at, profiles(username)")
         .eq("appetizer_id", appetizerId);
         setRatings(ratingRows || []);
+
+    const { data: commentRows } = await supabase
+        .from("comments")
+        .select("id, profile_id, body, created_at, profiles(username)")
+        .eq("appetizer_id", appetizerId)
+        .order("created_at", { ascending: true });
+        setComments(commentRows || []);
+
+    const commentIds = (commentRows || []).map((c) => c.id);
+        if (commentIds.length > 0) {
+            const { data: reactionRows } = await supabase
+            .from("comment_reactions")
+            .select("id, comment_id, profile_id, emoji")
+            .in("comment_id", commentIds);
+            setReactions(reactionRows || []);
+        } else {
+            setReactions([]);
+        }
     } finally {
         setLoading(false);
     }
@@ -132,6 +156,47 @@ async function handleDelete() {
     } finally {
         setDeleting(false);
     }
+}
+
+async function handlePostComment(e) {
+    e.preventDefault();
+    const body = commentText.trim();
+    if (!body || !appetizer || !user) return;
+    setPostingComment(true);
+    try {
+        await supabase.from("comments").insert({
+            appetizer_id: appetizer.id,
+            profile_id: user.id,
+            body,
+        });
+        setCommentText("");
+        await load();
+    } finally {
+        setPostingComment(false);
+    }
+}
+
+async function handleDeleteComment(commentId) {
+    if (!window.confirm("Delete this comment?")) return;
+    await supabase.from("comments").delete().eq("id", commentId);
+    await load();
+}
+
+async function handleToggleReaction(commentId, emoji) {
+    if (!user) return;
+    const existing = reactions.find(
+        (r) => r.comment_id === commentId && r.profile_id === user.id && r.emoji === emoji
+        );
+    if (existing) {
+        await supabase.from("comment_reactions").delete().eq("id", existing.id);
+    } else {
+        await supabase.from("comment_reactions").insert({
+            comment_id: commentId,
+            profile_id: user.id,
+            emoji,
+        });
+    }
+    await load();
 }
 
 if (!checked || !user) return null;
@@ -222,6 +287,68 @@ disabled={deleting}
 {deleting ? "Deleting..." : "🗑️ Delete appetizer"}
 </button>
 )}
+</div>
+    </div>
+
+<div className="comments-section">
+    <h3 className="section-heading">💬 Comments</h3>
+<form className="comment-form" onSubmit={handlePostComment}>
+    <textarea
+value={commentText}
+onChange={(e) => setCommentText(e.target.value)}
+placeholder="Add a comment..."
+rows={2}
+/>
+    <button type="submit" className="btn" disabled={postingComment || !commentText.trim()}>
+{postingComment ? "Posting..." : "Post"}
+</button>
+    </form>
+
+<div className="comment-list">
+{comments.length === 0 && <p className="empty">No comments yet.</p>}
+{comments.map((c) => (
+    <div className="comment-card" key={c.id}>
+<div className="comment-header">
+    <span className="comment-author">{c.profiles ? c.profiles.username : "?"}</span>
+<span className="comment-time">
+{new Date(c.created_at).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    })}
+</span>
+{c.profile_id === user.id && (
+    <button
+ className="comment-delete"
+ onClick={() => handleDeleteComment(c.id)}
+ title="Delete comment"
+ >
+     x
+     </button>
+ )}
+</div>
+<p className="comment-body">{c.body}</p>
+<div className="reaction-row">
+{REACTION_EMOJIS.map((emoji) => {
+    const reactors = reactions.filter(
+        (r) => r.comment_id === c.id && r.emoji === emoji
+        );
+    const mineReaction = reactors.some((r) => r.profile_id === user.id);
+    return (
+        <button
+    key={emoji}
+    className={"reaction-chip" + (mineReaction ? " active" : "")}
+                     onClick={() => handleToggleReaction(c.id, emoji)}
+>
+{emoji}
+{reactors.length > 0 && (
+    <span className="reaction-count">{reactors.length}</span>
+ )}
+</button>
+);
+})}
+</div>
+    </div>
+))}
 </div>
     </div>
     </>
