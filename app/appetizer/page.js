@@ -76,7 +76,7 @@ const load = useCallback(async () => {
     if (appRow.photo_url) {
       const { data: signedData } = await supabase.storage
       .from("appetizer-photos")
-      .createSignedUrl(appRow.photo_url, 3600);
+              .createSignedUrl(appRow.photo_url, 604800);
       photo_signed_url = signedData ? signedData.signedUrl : null;
     }
 
