@@ -309,7 +309,7 @@ function AppetizerDetailInner() {
                   ? "Uploading..."
                       : appetizer.photo_signed_url
                    ? "📷 Change photo"
-                      : "📷 Add photo"
+                      : "📷 Add photo"}
                 <input
                   type="file"
                   accept="image/*"
