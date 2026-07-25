@@ -706,3 +706,96 @@ button {
     font-size: 13px;
 }
 }
+
+
+.photo-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+}
+
+.photo-upload-btn {
+      display: inline-block;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.photo-upload-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+}
+
+.photo-upload-btn.uploading {
+      opacity: 0.6;
+      cursor: default;
+}
+
+.maker-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px;
+}
+
+.edit-chef-btn {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.edit-chef-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+}
+
+.chef-edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0 0 10px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+}
+
+.chef-edit-form select {
+      width: 100%;
+}
+
+.chef-edit-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+}
+
+@media (max-width: 480px) {
+      .photo-upload-btn {
+              font-size: 11px;
+              padding: 5px 12px;
+      }
+
+  .chef-edit-form {
+          padding: 10px;
+  }
+}
