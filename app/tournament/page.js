@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 import NavBar from "../NavBar";
 import {
   getNextLockTime,
@@ -11,7 +11,7 @@ import {
         ensureTournament,
           castVote,
           } from "../lib/tournament";
-          const { getCurrentUser } = require("../lib/currentUser");
+const { getCurrentUser } = require("../../lib/currentUser");
 
           const CATEGORIES = [
             { key: "appetizer", label: "🥟 Appetizer Bracket" },
