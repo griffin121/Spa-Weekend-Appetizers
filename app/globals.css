@@ -395,6 +395,19 @@ button {
     background: rgba(20, 10, 5, 0.35);
 }
 
+.category-tag {
+        cursor: pointer;
+        transition: transform 0.1s ease, filter 0.15s ease;
+}
+
+.category-tag:hover {
+        filter: brightness(1.2);
+}
+
+.category-tag:active {
+        transform: scale(0.94);
+}
+
 
 .rate-buttons {
     display: flex;
