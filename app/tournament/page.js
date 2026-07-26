@@ -11,8 +11,7 @@ import {
   ensureTournament,
   castVote,
   getLockSettings,
-  setLockSettings,
-} from "../lib/tournament";
+  from "../lib/tournament";
 const { getCurrentUser } = require("../../lib/currentUser");
 
 const CATEGORIES = [
@@ -47,9 +46,6 @@ export default function TournamentPage() {
   const [categoryData, setCategoryData] = useState({});
   const [lockHour, setLockHour] = useState(14);
   const [lockMinute, setLockMinute] = useState(0);
-  const [hourInput, setHourInput] = useState("14");
-  const [minuteInput, setMinuteInput] = useState("0");
-  const [savingLock, setSavingLock] = useState(false);
   const votingRef = useRef(false);
 
 useEffect(() => {
@@ -133,8 +129,6 @@ useEffect(() => {
     const settings = await getLockSettings();
     setLockHour(settings.lockHour);
     setLockMinute(settings.lockMinute);
-    setHourInput(String(settings.lockHour));
-    setMinuteInput(String(settings.lockMinute));
     setLocked(isPastLockTime(settings.lockHour, settings.lockMinute));
     loadAll(settings.lockHour, settings.lockMinute);
   })();
@@ -166,19 +160,6 @@ async function handleVote(category, match, appetizerId) {
   }
 }
 
-async function handleSaveLockTime() {
-  setSavingLock(true);
-  try {
-    const hour = Math.max(0, Math.min(23, Number(hourInput) || 0));
-    const minute = Math.max(0, Math.min(59, Number(minuteInput) || 0));
-    await setLockSettings(hour, minute);
-    setLockHour(hour);
-    setLockMinute(minute);
-  } finally {
-    setSavingLock(false);
-  }
-}
-
 if (!checked || !user) return null;
 
 return (
@@ -188,37 +169,7 @@ return (
   Single-elimination bracket - top rank faces bottom rank. A dish wins once it has more than half of everyone's votes.
   </p>
 
-  {user.username === "Griffin" && !locked && (
-    <div className="submit-card">
-<div className="section-heading">⏱️ Set lock time (Griffin only)</div>
-    <div className="radio-row">
-    <div>
-    <label>Hour (0-23)</label>
-   <input
-   type="text"
-   inputMode="numeric"
-   value={hourInput}
-   onChange={(e) => setHourInput(e.target.value)}
-   style={{ width: 70 }}
-  />
-    </div>
-  <div>
-    <label>Minute (0-59)</label>
-  <input
-  type="text"
-  inputMode="numeric"
-  value={minuteInput}
-  onChange={(e) => setMinuteInput(e.target.value)}
-  style={{ width: 70 }}
-/>
-  </div>
-  </div>
-<button type="button" className="btn small" disabled={savingLock} onClick={handleSaveLockTime}>
-{savingLock ? "Saving..." : `Save (currently ${formatLockTime(lockHour, lockMinute)})`}
-</button>
-  </div>
-)}
-
+  
 {!locked ? (
   <div className="countdown-box">
 <div className="countdown-label">🔒 Rankings lock for the tournament in</div>
