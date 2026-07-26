@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/", label: "🏠 Home", key: "home" },
   { href: "/rankings", label: "🥟 Appetizer Rankings", key: "rankings-appetizer" },
   { href: "/rankings/dessert", label: "🍰 Dessert Rankings", key: "rankings-dessert" },
+  { href: "/tournament", label: "🏆 Tournament", key: "tournament" },
   { href: "/account", label: "⚙️ Account", key: "account" },
 ];
 
