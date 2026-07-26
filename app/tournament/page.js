@@ -11,7 +11,7 @@ import {
   ensureTournament,
   castVote,
   getLockSettings,
-  from "../lib/tournament";
+} from "../lib/tournament";
 const { getCurrentUser } = require("../../lib/currentUser");
 
 const CATEGORIES = [
