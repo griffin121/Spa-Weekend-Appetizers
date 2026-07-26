@@ -49,6 +49,7 @@ const [profiles, setProfiles] = useState([]);
     const [loading, setLoading] = useState(true);
 
 const [name, setName] = useState("");
+    const [category, setCategory] = useState("appetizer");
     const [photoFile, setPhotoFile] = useState(null);
     const [madeWith, setMadeWith] = useState("solo");
     const [coMakerId, setCoMakerId] = useState("");
@@ -75,7 +76,7 @@ const load = useCallback(async () => {
 
                          const { data: appRows } = await supabase
     .from("appetizers")
-    .select("id, name, photo_url, made_by, co_maker_id, created_at")
+    .select("id, name, photo_url, made_by, co_maker_id, created_at, category")
     .order("created_at", { ascending: false });
 
                          const { data: ratingRows } = await supabase
@@ -144,9 +145,11 @@ async function handleSubmit(e) {
         photo_url,
         made_by: user.id,
         co_maker_id: madeWith === "with" ? coMakerId : null,
+        category,
     });
 
     setName("");
+        setCategory("appetizer");
         setPhotoFile(null);
         setMadeWith("solo");
         setCoMakerId("");
@@ -230,6 +233,25 @@ onClick={() => setMadeWith("with")}
     </select>
 )}
 
+<label>Category</label>
+<div className="radio-row">
+    <button
+type="button"
+className={`radio-chip${category === "appetizer" ? " active" : ""}`}
+onClick={() => setCategory("appetizer")}
+>
+🥟 Appetizer
+    </button>
+<button
+type="button"
+className={`radio-chip${category === "dessert" ? " active" : ""}`}
+onClick={() => setCategory("dessert")}
+>
+🍰 Dessert
+    </button>
+    </div>
+
+
 {error && <p className="error">{error}</p>}
 
 <button className="btn" style={{ marginTop: 18, width: "100%" }} disabled={submitting}>
@@ -264,6 +286,7 @@ onClick={() => setMadeWith("with")}
 <div className="app-info">
     <div className="title-row">
     <span className="title">{a.name}</span>
+<span className={`category-tag ${a.category}`}>{a.category === "dessert" ? "🍰🍰 Dessert" : "🥟 Appetizer"}</span>
     </div>
 <div className="makers">{makerLabel(a, user.id)}</div>
 <div className="avg-badge">
