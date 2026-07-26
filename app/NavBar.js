@@ -6,7 +6,8 @@ const { clearCurrentUser } = require("../lib/currentUser");
 
 const LINKS = [
   { href: "/", label: "🏠 Home", key: "home" },
-  { href: "/rankings", label: "🏆 Rankings", key: "rankings" },
+  { href: "/rankings", label: "🥟 Appetizer Rankings", key: "rankings-appetizer" },
+  { href: "/rankings/dessert", label: "🍰 Dessert Rankings", key: "rankings-dessert" },
   { href: "/account", label: "⚙️ Account", key: "account" },
 ];
 
