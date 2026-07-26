@@ -16,9 +16,9 @@ import {
 const { getCurrentUser } = require("../../lib/currentUser");
 
 const CATEGORIES = [
-  { key: "appetizer", label: "Appetizer Bracket" },
-  { key: "dessert", label: "Dessert Bracket" },
-  ];
+  { key: "appetizer", label: "🥟 Appetizer Bracket" },
+  { key: "dessert", label: "🍰 Dessert Bracket" },
+];
 
 function formatCountdown(ms) {
   if (ms <= 0) return "0h 0m 0s";
@@ -183,15 +183,15 @@ if (!checked || !user) return null;
 
 return (
   <div className="page">
-  <NavBar user={user} active="tournament" title={"Tournament"} />
+<NavBar user={user} active="tournament" title={"🏆 Tournament"} />
   <p className="sub-note">
   Single-elimination bracket - top rank faces bottom rank. A dish wins once it has more than half of everyone's votes.
   </p>
 
   {user.username === "Griffin" && !locked && (
     <div className="submit-card">
-    <div className="section-heading">Set lock time (Griffin only)</div>
-   <div className="radio-row">
+<div className="section-heading">⏱️ Set lock time (Griffin only)</div>
+    <div className="radio-row">
     <div>
     <label>Hour (0-23)</label>
    <input
@@ -221,8 +221,8 @@ return (
 
 {!locked ? (
   <div className="countdown-box">
-  <div className="countdown-label">Rankings lock for the tournament in</div>
- <div className="countdown-value">{countdownText || "calculating..."}</div>
+<div className="countdown-label">🔒 Rankings lock for the tournament in</div>
+  <div className="countdown-value">{countdownText || "calculating..."}</div>
 <p className="sub-note" style={{ margin: "10px 0 0" }}>
 At {formatLockTime(lockHour, lockMinute)}, the current standings for Appetizers and Desserts freeze and the bracket is generated automatically.
   </p>
@@ -272,7 +272,7 @@ return (
 
   {tournament.status === "completed" && (
     <div className="champion-banner">
-    Champion: {appetizersById[tournament.champion_id]?.name || "?"}
+🏆 Champion: {appetizersById[tournament.champion_id]?.name || "?"}
    </div>
    )}
 
@@ -363,7 +363,7 @@ onClick={() => onVote(match, match.appetizer_b_id)}
   </div>
 {decided ? (
   <div className="my-rating-badge" style={{ marginTop: 8 }}>
-Winner: {match.winner_id === match.appetizer_a_id ? (a ? a.name : "?") : (b ? b.name : "?")}
+✅ Winner: {match.winner_id === match.appetizer_a_id ? (a ? a.name : "?") : (b ? b.name : "?")}
 </div>
 ) : (
   <div className="sub-note" style={{ margin: "8px 0 0" }}>
