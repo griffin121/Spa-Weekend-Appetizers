@@ -853,3 +853,181 @@ button {
           padding: 10px;
   }
 }
+
+
+.countdown-box {
+    background: var(--panel);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.countdown-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.countdown-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+}
+
+.tournament-section {
+    margin-bottom: 32px;
+}
+
+.tournament-section h2 {
+    font-size: 18px;
+    margin: 0 0 16px;
+}
+
+.tournament-round {
+    margin-bottom: 22px;
+}
+
+.round-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.champion-banner {
+    background: linear-gradient(135deg, rgba(255, 209, 102, 0.25), rgba(255, 94, 98, 0.2));
+    border: 1px solid #ffd166;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.match-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.match-sides {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.match-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: inherit;
+    text-align: left;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+.match-side:hover:not(:disabled) {
+    border-color: var(--accent);
+}
+
+.match-side:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.match-side:disabled {
+    cursor: default;
+}
+
+.match-side.winner {
+    border-color: #ffd166;
+    background: rgba(255, 209, 102, 0.15);
+}
+
+.match-side.my-vote {
+    box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.seed-badge {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+.match-side-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.match-side-count {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.match-vs {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.match-note {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.bye-card {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 480px) {
+    .countdown-value {
+        font-size: 26px;
+    }
+
+.match-sides {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.match-vs {
+    text-align: center;
+}
+}
