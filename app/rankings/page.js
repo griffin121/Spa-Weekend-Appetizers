@@ -66,7 +66,8 @@ const load = useCallback(async () => {
 
                          const { data: appRows, error: appError } = await supabase
     .from("appetizers")
-    .select("id, name, photo_url, made_by, co_maker_id");
+    .select("id, name, photo_url, made_by, co_maker_id, category")
+      .eq("category", "appetizer");
 
                          if (!appError && appRows) {
                              const { data: ratingRows } = await supabase
@@ -136,8 +137,8 @@ if (!checked || !user) return null;
 
 return (
     <div className="page">
-      <NavBar user={user} active="rankings" title={"🏆 Rankings"} />
-    <p className="sub-note">The full group leaderboard, ranked by average rating.</p>
+      <NavBar user={user} active="rankings-appetizer" title={"🥟 Appetizer Rankings"} />
+    <p className="sub-note">The appetizer leaderboard, ranked by average rating.</p>
 
     {loading ? (
         <p className="empty">Loading rankings...</p>
