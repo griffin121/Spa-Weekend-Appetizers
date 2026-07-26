@@ -384,13 +384,15 @@ button {
 }
 
 .category-tag.dessert {
-    color: #ff8fab;
-    border-color: #ff8fab;
+    color: #ffe066;
+    border-color: #ffe066;
+    background: rgba(20, 10, 5, 0.35);
 }
 
 .category-tag.appetizer {
-    color: var(--accent);
-    border-color: var(--accent);
+    color: #7ef0e0;
+    border-color: #7ef0e0;
+    background: rgba(20, 10, 5, 0.35);
 }
 
 
