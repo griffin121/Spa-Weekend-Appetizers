@@ -168,6 +168,14 @@ async function handleDelete(a) {
     await load();
 }
 
+    async function handleToggleCategory(a) {
+            const newCategory = a.category === "dessert" ? "appetizer" : "dessert";
+            setAppetizers((prev) =>
+                        prev.map((x) => (x.id === a.id ? { ...x, category: newCategory } : x))
+                    );
+            await supabase.from("appetizers").update({ category: newCategory }).eq("id", a.id);
+    }
+
 function goToAppetizer(id) {
     router.push(`/appetizer/?id=${id}`);
 }
@@ -286,7 +294,7 @@ onClick={() => setCategory("dessert")}
 <div className="app-info">
     <div className="title-row">
     <span className="title">{a.name}</span>
-<span className={`category-tag ${a.category}`}>{a.category === "dessert" ? "🍰🍰 Dessert" : "🥟 Appetizer"}</span>
+                        <button type="button" className={`category-tag ${a.category}`} title="Tap to switch category" onClick={(e) => { e.stopPropagation(); handleToggleCategory(a); }}>{a.category === "dessert" ? "🍰 Dessert" : "🥟 Appetizer"}</button>
     </div>
 <div className="makers">{makerLabel(a, user.id)}</div>
 <div className="avg-badge">
