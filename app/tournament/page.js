@@ -304,8 +304,10 @@ className={
 disabled={decided}
 onClick={() => onVote(match, match.appetizer_a_id)}
 >
+  <div className="match-side-top">
   <span className="seed-badge">#{(seedById[match.appetizer_a_id] ?? 0) + 1}</span>
 <span className="match-side-name">{a ? a.name : "?"}</span>
+  </div>
 <span className="match-side-count">
 {aCount} vote{aCount === 1 ? "" : "s"}
 </span>
@@ -326,8 +328,10 @@ className={
 disabled={decided}
 onClick={() => onVote(match, match.appetizer_b_id)}
 >
+  <div className="match-side-top">
   <span className="seed-badge">#{(seedById[match.appetizer_b_id] ?? 0) + 1}</span>
 <span className="match-side-name">{b ? b.name : "?"}</span>
+  </div>
 <span className="match-side-count">
 {bCount} vote{bCount === 1 ? "" : "s"}
 </span>
