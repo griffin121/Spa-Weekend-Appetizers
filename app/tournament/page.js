@@ -138,7 +138,7 @@ useEffect(() => {
     const settings = await getLockSettings();
     setLockHour(settings.lockHour);
     setLockMinute(settings.lockMinute);
-    setLocked(isPastLockTime(settings.lockHour, settings.lockMinute));
+    setLocked(true); // tournament stays live once created; no daily lock/unlock cycle
     loadAll(settings.lockHour, settings.lockMinute);
   })();
 }, [user, loadAll]);
