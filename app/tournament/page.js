@@ -91,23 +91,32 @@ async function loadCategoryData(category, hour, minute) {
     seedById[e.appetizer_id] = e.seed;
   });
 
-  const activeMatchIds = (matches || [])
-  .filter((m) => m.status === "active")
-  .map((m) => m.id);
+  const allMatchIds = (matches || []).map((m) => m.id);
 
   let votesByMatch = {};
-  if (activeMatchIds.length) {
+  let profilesById = {};
+  if (allMatchIds.length) {
     const { data: voteRows } = await supabase
     .from("tournament_votes")
     .select("match_id, profile_id, voted_for_id")
-    .in("match_id", activeMatchIds);
+    .in("match_id", allMatchIds);
     (voteRows || []).forEach((v) => {
       if (!votesByMatch[v.match_id]) votesByMatch[v.match_id] = [];
       votesByMatch[v.match_id].push(v);
     });
+    const voterIds = [...new Set((voteRows || []).map((v) => v.profile_id))];
+    if (voterIds.length) {
+      const { data: profileRows } = await supabase
+      .from("profiles")
+      .select("id, username")
+      .in("id", voterIds);
+      (profileRows || []).forEach((p) => {
+        profilesById[p.id] = p;
+      });
+    }
   }
 
-  return { tournament, matches: matches || [], appetizersById, seedById, votesByMatch };
+  return { tournament, matches: matches || [], appetizersById, seedById, votesByMatch, profilesById };
 }
 
 const loadAll = useCallback(async (hour, minute) => {
@@ -206,7 +215,7 @@ function TournamentBracket({ label, data, user, onVote, totalProfiles }) {
     );
   }
 
-const { tournament, matches, appetizersById, seedById, votesByMatch } = data;
+const { tournament, matches, appetizersById, seedById, votesByMatch, profilesById } = data;
   const rounds = {};
   matches.forEach((m) => {
     if (!rounds[m.round]) rounds[m.round] = [];
@@ -238,6 +247,7 @@ return (
   appetizersById={appetizersById}
   seedById={seedById}
   votes={votesByMatch[m.id] || []}
+profilesById={profilesById}
 threshold={threshold}
 user={user}
 onVote={onVote}
@@ -250,7 +260,7 @@ onVote={onVote}
 );
 }
 
-function MatchCard({ match, appetizersById, seedById, votes, threshold, user, onVote }) {
+function MatchCard({ match, appetizersById, seedById, votes, threshold, user, onVote, profilesById }) {
   const a = match.appetizer_a_id ? appetizersById[match.appetizer_a_id] : null;
   const b = match.appetizer_b_id ? appetizersById[match.appetizer_b_id] : null;
 
@@ -272,6 +282,12 @@ const myVote = votes.find((v) => v.profile_id === user.id);
 const countFor = (id) => votes.filter((v) => v.voted_for_id === id).length;
 const aCount = countFor(match.appetizer_a_id);
 const bCount = countFor(match.appetizer_b_id);
+const namesFor = (id) =>
+  votes
+.filter((v) => v.voted_for_id === id)
+.map((v) => profilesById[v.profile_id]?.username || "?");
+const aNames = namesFor(match.appetizer_a_id);
+const bNames = namesFor(match.appetizer_b_id);
 const decided = match.status === "completed";
 
 return (
@@ -293,6 +309,11 @@ onClick={() => onVote(match, match.appetizer_a_id)}
 <span className="match-side-count">
 {aCount} vote{aCount === 1 ? "" : "s"}
 </span>
+{aNames.length > 0 && (
+  <span className="match-side-voters" style={{ display: "block", fontSize: "0.75rem", color: "#666" }}>
+{aNames.join(", ")}
+</span>
+  )}
   </button>
 <div className="match-vs">vs</div>
 <button
@@ -310,6 +331,11 @@ onClick={() => onVote(match, match.appetizer_b_id)}
 <span className="match-side-count">
 {bCount} vote{bCount === 1 ? "" : "s"}
 </span>
+{bNames.length > 0 && (
+  <span className="match-side-voters" style={{ display: "block", fontSize: "0.75rem", color: "#666" }}>
+{bNames.join(", ")}
+</span>
+  )}
   </button>
   </div>
 {decided ? (
