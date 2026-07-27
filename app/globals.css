@@ -922,23 +922,32 @@ button {
 
 .match-sides {
     display: flex;
-    align-items: center;
+        align-items: stretch;
     gap: 10px;
 }
 
 .match-side {
     flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 12px;
-    color: var(--text);
-    font-family: inherit;
-    text-align: left;
-    transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 12px;
+        color: var(--text);
+        font-family: inherit;
+        text-align: left;
+        transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+.match-side-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
 }
 
 .match-side:hover:not(:disabled) {
@@ -990,6 +999,13 @@ button {
     flex-shrink: 0;
     font-size: 12px;
     color: var(--muted);
+}
+
+.match-side-voters {
+        font-size: 12px;
+        color: var(--muted);
+        overflow-wrap: break-word;
+        word-break: break-word;
 }
 
 .match-vs {
